@@ -221,8 +221,7 @@ WHERE UPPER(LEFT(CUSTOMERNAME,1)) IN ('A','E','I','O','U');
 /*Explanation
 -------------
 • UPPER() converts customer names to uppercase for case-insensitive matching.
-• LIKE identifies names starting with each vowel.
-• OR combines all vowel conditions.
+• IN identifies names starting with each vowel.
 
 Business Insight
 ----------------
@@ -265,7 +264,6 @@ WHERE PRINCIPAL_OUTSTANDING IS NULL OR PRINCIPAL_OUTSTANDING = 0;
 -------------
 • IS NULL identifies missing outstanding values.
 • CASE classifies each loan into appropriate categories.
-• Loans with values greater than zero are marked as ACTIVE OUTSTANDING.
 
 Business Insight
 ----------------
@@ -389,7 +387,6 @@ WHERE lOAN_RANK = 2;
 -------------
 • The inner query returns the highest financed amount.
 • The outer query excludes that value.
-• MAX() then returns the next highest financed amount.
 
 Business Insight
 ----------------
