@@ -1,4 +1,3 @@
-## Window Functions
 
 /*=============================================================================
 Q35. Assign a row number to every loan within each branch to identify the

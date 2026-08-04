@@ -1,4 +1,3 @@
-## EXISTS & Subqueries
 
 /*=============================================================================
 Q19. Find customers who currently hold at least one active loan using EXISTS.

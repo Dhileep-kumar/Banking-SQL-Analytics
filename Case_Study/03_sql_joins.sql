@@ -1,4 +1,3 @@
-## SQL Joins
 
 /*=============================================================================
 Q15. Display every loan along with the customer name and branch name.

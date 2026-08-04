@@ -1,4 +1,3 @@
-## Aggregate Functions & Conditional Logic
 
 /*=============================================================================
 Q11. Find products whose processing fee percentage is above the overall average

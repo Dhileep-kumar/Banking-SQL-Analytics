@@ -1,4 +1,3 @@
-## Common Table Expressions (CTEs)
 
 /*=============================================================================
 Q32. Calculate each branch's total outstanding portfolio and rank the branches
