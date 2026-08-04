@@ -98,6 +98,12 @@ ON L.CIF_NO = C.CIF_NO
 WHERE A.AMT_RECEIVED > S.EMI_AMT
 ORDER BY A.LOAN_ID;
 
+/*Explanation
+-------------
+• TOTAL_EMI_SCHEDULE totals the scheduled principal and interest per loan.
+• TOTAL_EMI_RECEIVED totals the actual amounts received per loan.
+• Joining the two and filtering AMT_RECEIVED > EMI_AMT isolates loans where
+  the customer paid more than what was scheduled.
 
 Business Insight
 ----------------

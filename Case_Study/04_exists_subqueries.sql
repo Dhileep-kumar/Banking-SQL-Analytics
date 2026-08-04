@@ -425,6 +425,11 @@ WHERE PRODUCTFLAG NOT IN (SELECT
                           FROM LOAN_MASTER
                           GROUP BY PRODUCTFLAG);
 
+/*Explanation
+-------------
+• The subquery returns the distinct PRODUCTFLAG values that already have at
+  least one loan booked against them.
+• NOT IN excludes those flags, leaving only products with zero associated loans.
 
 Business Insight
 ----------------
@@ -445,6 +450,10 @@ The collections and risk management teams want to identify branches that have
 highly delinquent loans (DPD greater than 90 days). This helps prioritize
 collection efforts and monitor branch-level credit risk.
 
+Approach
+--------
+Use a correlated EXISTS subquery to check, for each branch, whether at least
+one loan in LOAN_MASTER belongs to that branch and has DPD greater than 90.
 
 SQL Query
 ---------*/
@@ -456,7 +465,12 @@ WHERE EXISTS (SELECT 1
               FROM LOAN_MASTER AS L
               WHERE B.BRANCH_ID = L.BRANCH_ID AND L.DPD > 90);
 
-
+/*Explanation
+-------------
+• The correlated subquery checks each branch against LOAN_MASTER for a
+  matching row with DPD > 90.
+• EXISTS returns TRUE as soon as one qualifying loan is found, so a branch
+  needs only one severely delinquent loan to appear in the result.
 
 Business Insight
 ----------------

@@ -80,6 +80,12 @@ ON L.EMPID = LO.EMPID
 GROUP BY L.BRANCH_ID,LO.EMP_NAME) AS T
 WHERE TOP_RANK <= 3;
 
+/*Explanation
+-------------
+• The subquery totals AMOUNT_FIN per officer within each branch.
+• RANK() OVER(PARTITION BY BRANCH_ID ORDER BY TOTAL_AMT_FIN DESC) ranks
+  officers within their own branch, so rankings reset for every branch.
+• Filtering TOP_RANK <= 3 keeps only the top 3 officers per branch.
 
 Business Insight
 ----------------
