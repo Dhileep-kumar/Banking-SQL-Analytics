@@ -15,7 +15,16 @@ loan officers, and NPA tracking.
 
 ==============================================================*/
 
---BRANCH MASTER--
+/*--------------------------------------------------------------
+BRANCH_MASTER
+Purpose : Stores branch-level details (location, region) used to
+          tie loans, loan officers, and collection agents to a
+          specific branch for branch-wise reporting.
+Design  : BRANCH_ID is the primary key since it's the natural
+          unique identifier for a branch. All location fields are
+          marked NOT NULL as every branch record must have a
+          complete address for reporting purposes.
+--------------------------------------------------------------*/
 CREATE TABLE BRANCH_MASTER(
 	BRANCH_ID INT NOT NULL,
 	BRANCH_NAME VARCHAR(100) NOT NULL,
@@ -25,7 +34,16 @@ CREATE TABLE BRANCH_MASTER(
 	CONSTRAINT PK_BRANCH PRIMARY KEY (BRANCH_ID)
 );
 
---PRODUCT MASTER--
+/*--------------------------------------------------------------
+PRODUCT_MASTER
+Purpose : Master list of loan products offered, along with their
+          eligible interest rate range, tenure limit, and
+          processing fee — used to price and classify loans.
+Design  : PRODUCTFLAG is used as the primary key instead of a
+          surrogate ID since it acts as the natural short code
+          referenced by LOAN_MASTER. MIN_EFF/MAX_EFF define the
+          allowed interest band for each product.
+--------------------------------------------------------------*/
 CREATE TABLE PRODUCT_MASTER(
 	PRODUCTFLAG VARCHAR(20) NOT NULL,
 	PRODUCT_NAME VARCHAR(50) NOT NULL,
@@ -36,7 +54,18 @@ CREATE TABLE PRODUCT_MASTER(
 	CONSTRAINT PK_PRODUCT PRIMARY KEY (PRODUCTFLAG)
 );
 
---CUSTOMER MASTER--
+/*--------------------------------------------------------------
+CUSTOMER_MASTER
+Purpose : Stores customer demographic and KYC details used for
+          profiling, eligibility checks, and relationship tenure
+          analysis (CUSTOMER_SINCE_DATE).
+Design  : CIF_NO is the primary key, matching real banking systems
+          where CIF (Customer Information File) number uniquely
+          identifies a customer. CHECK constraints are added on
+          GENDER, MOBILE length, and CREDIT_SCORE to enforce basic
+          data quality at the schema level (CREDIT_SCORE allows -1
+          to represent "no score available").
+--------------------------------------------------------------*/
 CREATE TABLE CUSTOMER_MASTER(
 	CIF_NO INT NOT NULL,
 	CUSTOMERNAME VARCHAR(70) NOT NULL,
@@ -53,7 +82,15 @@ CREATE TABLE CUSTOMER_MASTER(
 	CONSTRAINT PK_CUSTOMER PRIMARY KEY (CIF_NO)
 );
 
---LOAN_OFFICER_MASTER--
+/*--------------------------------------------------------------
+LOAN_OFFICER_MASTER
+Purpose : Stores loan officer details, used to track which officer
+          originated each loan and to measure officer-wise
+          performance (disbursement volume, tenure, etc.).
+Design  : EMPID is the primary key. BRANCH_ID is a mandatory
+          foreign key back to BRANCH_MASTER since every officer
+          must be attached to exactly one branch.
+--------------------------------------------------------------*/
 CREATE TABLE LOAN_OFFICER_MASTER(
 	EMPID INT NOT NULL,
 	EMP_NAME VARCHAR(50) NOT NULL,
@@ -66,7 +103,15 @@ CREATE TABLE LOAN_OFFICER_MASTER(
 
 );
 
---AGENT--
+/*--------------------------------------------------------------
+COLLECTION_AGENT_MASTER
+Purpose : Stores collection agent details used to track which
+          agent is responsible for recovery efforts on delinquent
+          loans, and to measure agent-wise recovery performance.
+Design  : AGENT_ID is the primary key. BRANCH_ID links each agent
+          to a branch, mirroring the same branch-attachment pattern
+          used for loan officers.
+--------------------------------------------------------------*/
 CREATE TABLE COLLECTION_AGENT_MASTER(
 	AGENT_ID INT NOT NULL,
 	AGENT_NAME VARCHAR (50) NOT NULL,
@@ -78,7 +123,21 @@ CREATE TABLE COLLECTION_AGENT_MASTER(
 
 
 
---LOAN MASTER--
+/*--------------------------------------------------------------
+LOAN_MASTER
+Purpose : Central fact table of the schema — one row per loan,
+          holding disbursal details, status, interest rate,
+          delinquency (DPD), and outstanding balance. Almost every
+          analytical query in this project is built around this
+          table.
+Design  : LOAN_ID is the primary key. Four foreign keys
+          (CIF_NO, PRODUCTFLAG, BRANCH_ID, EMPID) tie the loan back
+          to its customer, product, branch, and originating officer,
+          which is what enables the multi-table joins used in the
+          business questions. CHECK constraints enforce that
+          AMOUNT_FIN and RATE_OF_INTEREST are non-negative, DPD is
+          never negative, and STATUS is restricted to ACTIVE/CLOSED.
+--------------------------------------------------------------*/
 CREATE TABLE LOAN_MASTER(
 	LOAN_ID INT NOT NULL,
 	CIF_NO INT NOT NULL,
@@ -101,7 +160,17 @@ CREATE TABLE LOAN_MASTER(
 );
 
 
---REPAYMENT SCHEDULE--
+/*--------------------------------------------------------------
+REPAYMENT_SCHEDULE
+Purpose : Holds the planned/expected EMI schedule for each loan
+          (due date, principal and interest components, expected
+          outstanding balance) — used for LEAD/LAG and running-total
+          style analysis of scheduled repayments.
+Design  : SCHEDULE_ID is a surrogate primary key since a loan can
+          have many schedule rows (one per EMI). LOAN_ID is a
+          foreign key back to LOAN_MASTER. OUTSTANDING_BAL is
+          constrained to be non-negative.
+--------------------------------------------------------------*/
 CREATE TABLE REPAYMENT_SCHEDULE(
 	SCHEDULE_ID INT NOT NULL,
 	LOAN_ID INT NOT NULL,
@@ -114,7 +183,16 @@ CREATE TABLE REPAYMENT_SCHEDULE(
 	CONSTRAINT FK_RS_LOAN FOREIGN KEY(LOAN_ID) REFERENCES LOAN_MASTER(LOAN_ID)
 );
 
---REPAYMENT ACTUAL--
+/*--------------------------------------------------------------
+REPAYMENT_ACTUAL
+Purpose : Holds the actual payments received against a loan
+          (amount, date, payment mode) — used to compare actual
+          vs. scheduled repayment (e.g. Q33's overpayment analysis).
+Design  : RECEIPT_ID is a surrogate primary key since a loan can
+          have many receipts. LOAN_ID is a foreign key back to
+          LOAN_MASTER. PAYMENT_MODE is restricted via CHECK to a
+          fixed set of valid payment channels.
+--------------------------------------------------------------*/
 CREATE TABLE REPAYMENT_ACTUAL(
 	RECEIPT_ID INT NOT NULL,
 	LOAN_ID INT NOT NULL,
@@ -126,7 +204,18 @@ CREATE TABLE REPAYMENT_ACTUAL(
 	CONSTRAINT FK_RA_LOAN FOREIGN KEY(LOAN_ID) REFERENCES LOAN_MASTER(LOAN_ID)
 );
 
---COLLECTION_DETAILS--
+/*--------------------------------------------------------------
+COLLECTION_DETAILS
+Purpose : Tracks collection/recovery follow-ups on delinquent
+          loans — which DPD bucket the loan falls in, the assigned
+          agent, recovery status, and amount recovered.
+Design  : COLLECTION_ID is a surrogate primary key since a loan can
+          have multiple follow-up records over time. LOAN_ID and
+          AGENT_ID are foreign keys back to LOAN_MASTER and
+          COLLECTION_AGENT_MASTER respectively. BUCKET and
+          RECOVERY_STATUS are constrained to fixed value sets to
+          keep collection reporting consistent.
+--------------------------------------------------------------*/
 CREATE TABLE COLLECTION_DETAILS(
 	COLLECTION_ID INT NOT NULL,
 	LOAN_ID INT NOT NULL,
@@ -141,7 +230,17 @@ CREATE TABLE COLLECTION_DETAILS(
 	
 );
 
---NPA TRACKING--
+/*--------------------------------------------------------------
+NPA_TRACKING
+Purpose : Point-in-time snapshot of a loan's Non-Performing Asset
+          (NPA) classification and provisioning amount, used for
+          regulatory/risk reporting as of a given date.
+Design  : NPA_ID is a surrogate primary key since a loan can have
+          multiple NPA snapshots over time (one per AS_OF_DATE).
+          LOAN_ID is a foreign key back to LOAN_MASTER.
+          NPA_CATEGORY is constrained to a fixed set of
+          classification values.
+--------------------------------------------------------------*/
 CREATE TABLE NPA_TRACKING(
 	NPA_ID INT NOT NULL,
 	LOAN_ID INT NOT NULL,
