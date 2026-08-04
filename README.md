@@ -47,7 +47,7 @@ Full DDL with design rationale for every table: [`Database/create_tables.sql`](D
 - SQL
 - PostgreSQL
 - Relational Database Design
-- Data Cleaning
+- Analytical Problem Solving
 - Business Analytics
 - Financial Data Analysis
 - Window Functions
