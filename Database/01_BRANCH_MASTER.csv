@@ -1,0 +1,26 @@
+BRANCH_ID,BRANCH_NAME,CITY,STATE,REGION
+1,Chennai - T Nagar Branch,Chennai,Tamil Nadu,South
+2,Chennai - Anna Nagar Branch,Chennai,Tamil Nadu,South
+3,Coimbatore Branch,Coimbatore,Tamil Nadu,South
+4,Madurai Branch,Madurai,Tamil Nadu,South
+5,Bengaluru - Koramangala Branch,Bengaluru,Karnataka,South
+6,Bengaluru - Whitefield Branch,Bengaluru,Karnataka,South
+7,Hyderabad Branch,Hyderabad,Telangana,South
+8,Kochi Branch,Kochi,Kerala,South
+9,Delhi - Connaught Place Branch,Delhi,Delhi,North
+10,Delhi - Dwarka Branch,Delhi,Delhi,North
+11,Jaipur Branch,Jaipur,Rajasthan,North
+12,Lucknow Branch,Lucknow,Uttar Pradesh,North
+13,Kanpur Branch,Kanpur,Uttar Pradesh,North
+14,Chandigarh Branch,Chandigarh,Chandigarh,North
+15,Mumbai - Andheri Branch,Mumbai,Maharashtra,West
+16,Mumbai - Borivali Branch,Mumbai,Maharashtra,West
+17,Pune Branch,Pune,Maharashtra,West
+18,Nashik Branch,Nashik,Maharashtra,West
+19,Ahmedabad Branch,Ahmedabad,Gujarat,West
+20,Surat Branch,Surat,Gujarat,West
+21,Kolkata - Salt Lake Branch,Kolkata,West Bengal,East
+22,Kolkata - Park Street Branch,Kolkata,West Bengal,East
+23,Bhubaneswar Branch,Bhubaneswar,Odisha,East
+24,Patna Branch,Patna,Bihar,East
+25,Ranchi Branch,Ranchi,Jharkhand,East

@@ -1,0 +1,11 @@
+PRODUCTFLAG,PRODUCT_NAME,MIN_EFF,MAX_EFF,MAX_TENURE_MONTHS,PROCESSING_FEE_PCT
+PL,Personal Loan,11.0,24.0,60,2.0
+HL,Home Loan,8.0,12.0,240,0.5
+AL,Auto Loan,9.0,14.0,84,1.0
+BL,Business Loan,14.0,22.0,120,2.0
+LAP,Loan Against Property,9.0,15.0,180,1.0
+GL,Gold Loan,7.0,12.0,24,0.5
+EL,Education Loan,8.0,13.0,120,1.0
+TWL,Two Wheeler Loan,10.0,18.0,48,1.5
+CL,Consumer Durable Loan,12.0,20.0,36,2.0
+MFI,Micro Finance Loan,18.0,26.0,24,1.0
