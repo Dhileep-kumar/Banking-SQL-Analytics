@@ -4,9 +4,17 @@ End-to-end SQL analytics portfolio project simulating an NBFC (Non-Banking Finan
 
 ## Overview
 
-This project models the core of a retail lending system: customers, loans, products, branches, repayment schedules, collections, and NPA (Non-Performing Asset) tracking. It's built the way these systems actually look in BFSI operations — CIF-based customer identity, DPD/EMI-driven loan lifecycle, bucket-based collections, and point-in-time NPA snapshots.
+This project models the core of a retail lending system: customers, loans, products, branches, repayment schedules, collections, and NPA (Non-Performing Asset) tracking. It's built inspired by common data structures used in BFSI operations — CIF-based customer identity, DPD/EMI-driven loan lifecycle, bucket-based collections, and point-in-time NPA snapshots.
 
 Each of the 40 SQL solutions is written as a mini case study: **business requirement → approach → SQL → explanation → business insight** — not just a query, but the reasoning a data analyst would document for a stakeholder.
+
+## Project Highlights
+
+- Designed a normalized PostgreSQL database with 10 relational tables.
+- Solved 40 real-world banking business problems using SQL.
+- Covered advanced SQL concepts including CTEs, window functions, EXISTS, correlated subqueries, and ranking functions.
+- Simulated an NBFC retail lending portfolio with customers, loans, repayments, collections, and NPA tracking.
+- Organized SQL solutions by topic for easy navigation and learning.
 
 ## Schema
 
@@ -33,6 +41,53 @@ Full DDL with design rationale for every table: [`Database/create_tables.sql`](D
 
 - **Database:** PostgreSQL
 - **SQL concepts covered:** joins (INNER/LEFT/SELF), EXISTS/NOT EXISTS, correlated subqueries, CTEs, window functions (`ROW_NUMBER`, `RANK`, `DENSE_RANK`, `LEAD`, `LAG`), running totals, moving averages, date/string functions
+
+## Skills Demonstrated
+
+- SQL
+- PostgreSQL
+- Relational Database Design
+- Data Cleaning
+- Business Analytics
+- Financial Data Analysis
+- Window Functions
+- Common Table Expressions (CTEs)
+- Query Optimization
+- Data Aggregation
+- Banking Domain Analytics
+
+## Repository Structure
+
+```
+Banking-SQL-Analytics/
+├── Database/
+├── ER_Diagram/
+├── Case_Study/
+│   ├── 01_basic.sql
+│   ├── 02_aggregate_functions_conditional_logic.sql
+│   ├── 03_sql_joins.sql
+│   ├── 04_exists_subqueries.sql
+│   ├── 05_ctes.sql
+│   ├── 06_window_functions.sql
+│   └── business_questions.md
+├── LICENSE
+└── README.md
+```
+
+## Dataset
+
+The sample dataset used in this project is included in CSV format for reproducibility. It contains synthetic banking data including:
+
+- Customers
+- Loans
+- Products
+- Branches
+- Loan Officers
+- Collection Agents
+- Repayment Schedule
+- Repayment Actual
+- Collections
+- NPA Tracking
 
 ## Getting Started
 
@@ -93,6 +148,19 @@ ON L.EMPID = LO.EMPID
 GROUP BY L.BRANCH_ID,LO.EMP_NAME) AS T
 WHERE TOP_RANK <= 3;
 ```
+
+## Future Enhancements
+
+- Dashboard development using Tableau / Power BI
+- SQL performance optimization examples
+- Stored Procedures
+- Views and Materialized Views
+- Indexing demonstrations
+- Additional banking analytics scenarios
+
+## About Me
+
+I'm a Data Analyst with experience in SQL, PostgreSQL, Tableau Prep, Python, and banking operations. This repository showcases my practical SQL skills through realistic banking analytics scenarios inspired by real-world business problems.
 
 ## License
 
