@@ -178,5 +178,5 @@ The project uses the following banking tables:
 The corresponding SQL solutions for all the above business questions are available in:
 
 ```text
-Case_Study/sql_solutions.sql
+Case_Study/
 ```
